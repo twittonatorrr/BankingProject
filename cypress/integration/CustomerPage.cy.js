@@ -17,23 +17,16 @@ describe('Customer Page Test', ()=>{
         loginPage.goToLoginPage();
         const userAccountPage = loginPage.loginAsUser('Harry Potter');
         userAccountPage.makeDeposit(1000);
-        cy.get('.btn.btn-lg.tab').eq(2).click();
-        cy.wait(1000);
-
-        cy.get("input[placeholder='amount']").clear().type(1000);
-        cy.get("input[placeholder='amount']").should('have.value', '1000');
-
-        cy.get("button[type='submit']").contains('Withdraw').click();
-        cy.get('.error.ng-binding').contains('Transaction successful').should('be.visible');
+        userAccountPage.goToWithdrawlPage();
+        cy.wait(500); //necessary because of too long rendering
+        userAccountPage.makeWithdrawl(1000);
     });
 
     it('Test Case 9: User make a withdraw with no value on balance', ()=>{
         loginPage.goToLoginPage();
         const userAccountPage = loginPage.loginAsUser('Harry Potter');
-        cy.get('.btn.btn-lg.tab').eq(2).click();
-        cy.get("input[placeholder='amount']").type(1000);
-        cy.get("button[type='submit']").contains('Withdraw').click();
-        cy.get('.error.ng-binding').contains('Transaction Failed. You can not withdraw amount more than the balance.').should('be.visible');
+        userAccountPage.goToWithdrawlPage();
+        userAccountPage.makeWithdrawlWithoutMoney(1000);
     });
 
     
@@ -66,7 +59,7 @@ describe('Customer Page Test', ()=>{
         cy.wrap(transactionTime).as('transactionTime');
 
 
-        cy.wait(500);
+        cy.wait(1000);
         userAccountPage.goToTransactionsPage();
 
         cy.get('@transactionTime').then(time => {
