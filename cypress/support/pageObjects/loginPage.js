@@ -1,5 +1,6 @@
 import UserAccountPage from "./userAccountPage";
 import TransactionPage from "./transactionsPage";
+import ManagerPage from "./managerPage";
 
 class LoginPage{
     goToLoginPage(){
@@ -19,6 +20,7 @@ class LoginPage{
         cy.get('button').contains('Add Customer').should('be.visible');
         cy.get('button').contains('Open Account').should('be.visible');
         cy.get('button').contains('Customers').should('be.visible');  
+        return new ManagerPage;
     }
 
     logout(){

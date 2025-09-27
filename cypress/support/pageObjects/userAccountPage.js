@@ -20,6 +20,23 @@ class UserAccountPage{
         cy.get('#accountSelect').select(index);
         cy.get("div[ng-hide='noAccount']").should('contain', value);
     }
+
+    goToWithdrawlPage(){
+        cy.get('.btn.btn-lg.tab').eq(2).click();
+    }
+
+    makeWithdrawl(value){
+        cy.get("input[placeholder='amount']").clear().type(value);
+        cy.get("input[placeholder='amount']").should('have.value', value);
+        cy.get("button[type='submit']").contains('Withdraw').click();
+        cy.get('.error.ng-binding').contains('Transaction successful').should('be.visible');
+    }
+
+    makeWithdrawlWithoutMoney(value){
+        cy.get("input[placeholder='amount']").type(value);
+        cy.get("button[type='submit']").contains('Withdraw').click();
+        cy.get('.error.ng-binding').contains('Transaction Failed. You can not withdraw amount more than the balance.').should('be.visible');
+    }
 }
 
 export default UserAccountPage;
